@@ -1,16 +1,32 @@
 using UnityEngine;
 
-public class DoofusControl : MonoBehaviour
+public class Doofus : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float speed = 3.0f;
+    private Rigidbody rb;
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+
+        Vector3 movement = new Vector3(horizontalInput, 0, verticalInput);
+        transform.Translate(Vector3.forward*Time.deltaTime * verticalInput);
+        transform.Translate(-Vector3.forward*Time.deltaTime * horizontalInput);
+
+        rb.AddForce(movement * speed);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Pulpit"))
+        {
+            // Update score
+            GameManager.instance.UpdateScore();
+        }
     }
 }

@@ -1,16 +1,26 @@
 using UnityEngine;
-
-public class PulpitControl : MonoBehaviour
+public class Pulpit : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public float destroyTime = 5.0f;
 
-    // Update is called once per frame
+    private float timer = 0.0f;
+
     void Update()
     {
-        
+        timer += Time.deltaTime;
+
+        if (timer >= destroyTime)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Doofus"))
+        {
+            // Update score
+            GameManager.instance.UpdateScore();
+        }
     }
 }
